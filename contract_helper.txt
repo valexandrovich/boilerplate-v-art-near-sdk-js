@@ -1,0 +1,31 @@
+export ADMIN_ID=v-art-manual.testnet
+export ARTIST_ID=$ADMIN_ID
+export NFT_CONTRACT_ID=nft.$ADMIN_ID
+export MARKET_CONTRACT_ID=market.$ADMIN_ID
+export LICENSE_CONTRACT_ID=license.$ADMIN_ID
+
+
+export TOKEN_ID=token1
+
+near view $NFT_CONTRACT_ID nft_metadata
+
+
+near call $NFT_CONTRACT_ID nft_mint '{"token_id": "'$TOKEN_ID'", "token_owner_id": "'$ADMIN_ID'",
+  "token_metadata": {
+    "title": "Putin hujlo",
+    "description": "Very much",
+    "media": "https://ipfs.io/ipfs/bafybeicmy2c2hpfb5so5maacqnfuxm54ohom5iaeaeeuhvrxg6j32hn6re/avatars-rfwy5mSeUytFz5Gx-8s06ZQ-t240x240.jpg",
+    "media_hash": "cHVuayBmb3IgbWpvbG5lYXIhIG1vbSBpIGxvdmUgeW91",
+    "copies": 1,
+    "issued_at": "2020-07-10 15:00:00.000",
+    "expires_at": "2020-07-10 15:00:00.000",
+    "starts_at": "2020-07-10 15:00:00.000",
+    "updated_at": "2020-07-10 15:00:00.000",
+    "reference": "https://myjsonwithtraits.com/punk.json",
+    "reference_hash": "cHVuayBmb3IgbWpvbG5lYXIhIG1vbSBpIGxvdmUgeW91"
+  },
+  "token_custom_metadata": {
+    "category": 1
+  },
+  "token_royalties" : {"'$ARTIST_ID'": 5}
+}' --deposit 0.1 --gas 300000000000000 --accountId $ADMIN_ID
