@@ -62,8 +62,6 @@ class CertificatesApi {
     }
 
     async downloadCertificate(certificateDownloadUrl) {
-        console.log("CERTIFICATE URL")
-        console.log(certificateDownloadUrl)
 
         // const pdfUrl = this.certHost + "/" + this.certDownloadUrl + '/' + certificateId + "/certificate.pdf";
         var config = {
@@ -73,9 +71,9 @@ class CertificatesApi {
             headers: {}
         };
 
-        // const response = await axios(config)
-        // return new Blob([response.data], { type: 'application/pdf' })
-        return await axios(config)
+        const response = await axios(config)
+        return new Blob([response.data], { type: 'application/pdf' })
+        // return await axios(config)
     }
 
     async createCertificate(certificateMetadata) {

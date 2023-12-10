@@ -134,6 +134,9 @@ class vArtNearApi {
     }
 
 
+
+
+
     async createBlob(file) {
         let blobResolve
         let blobDone = new Promise((resolve, reject) => {
@@ -258,6 +261,8 @@ class vArtNearApi {
      * medium: string,                                      // token medium ( ".JPG, .PNG, .MP4 etc")
      * genre: string,                                       // genre of NFT token  ("Art" ... )
      * bio: string,                                         // NFT token author biography
+     * format: string,                                      // NFT token format (like .fbx, .png, .mp4 etc)
+     * type: string,                                        // NFT token type (like 3D Model, Video, Image etc.)
      * description: string,                                 // Description of NFT Token
      * artist: string,                                      // NFT token artist name
      * createdBy: string,                                   // NFT token creator name
@@ -273,10 +278,6 @@ class vArtNearApi {
      * @param gas     : string                              // OPTIONAL GAS for transaction (in NEAR; default '0.0000000003')
      */
     async fullMint(fullMintMetadata, deposit = '0.1', gas = '0.0000000003') {
-
-
-        // console.log(fullMintMetadata)
-        // return
 
         if (!this.nftContract) {
             throw new Error('NFT Contract is not initialized!');
@@ -308,8 +309,6 @@ class vArtNearApi {
             previewUrl = this.ipfsGateway + resp.ipfsHash;
             previewHash = resp.hexB64;
         });
-        console.log('PIN PREVIEW DONE : ' + 'PREVIEW_' + fullMintMetadata.title)
-        console.log('PREVIEW URL: ' + previewUrl)
 
 
         if (fullMintMetadata.media) {
@@ -323,8 +322,6 @@ class vArtNearApi {
             mediaHash = resp.hexB64;
         });
 
-        console.log('PIN MEDIA DONE : ' + 'MEDIA' + fullMintMetadata.title)
-        console.log('MEDIA URL:' + mediaUrl)
 
         const date = new Date();
         const strDate = date.toISOString().slice(0, 10) + ' 00:00:00.000';
@@ -362,34 +359,25 @@ class vArtNearApi {
         };
 
 
-
         const certificate = await this.certificateService.createTokenCertificate(certificateMetadata)
+
 
 
         const certificateBlob = await this.certificateService.downloadCertificate(
             certificate.downloadUrl
         );
 
-        // const fixedBlob = await this.fixPdf(certificateBlob.data);
 
-        console.log(certificateBlob)
-        // console.log(fixedBlob)
-
-
-        // return
         let certificateUrl;
         let certificateHash;
 
-        await this.ipfsService.pinFile(certificateBlob.data, 'CERT_' + fullMintMetadata.title).then((resp) => {
+        await this.ipfsService.pinFile(certificateBlob, 'CERT_' + fullMintMetadata.title ).then((resp) => {
+            console.log(resp)
+            console.log('LINK')
+            console.log(this.ipfsGateway + resp.ipfsHash)
             certificateUrl = this.ipfsGateway + resp.ipfsHash;
             certificateHash = resp.hexB64;
         });
-
-
-
-        console.log('PINED CERTIFICATE: ' + 'CERT_' + fullMintMetadata.title)
-        console.log('Cert url: ' + certificateUrl)
-
 
         const referenceData = {
             name: fullMintMetadata.tokenId + '.json',
@@ -431,8 +419,6 @@ class vArtNearApi {
             referenceHash = resp.hexB64
         });
 
-        console.log('Pined metadata: ' + 'METADATA_' + fullMintMetadata.title)
-        console.log('Metadata url: ' + referenceUrl)
 
         const repackRoyalties = {}
         for (const k in fullMintMetadata.royalties) {
@@ -488,6 +474,8 @@ class vArtNearApi {
             ;
         }
     }
+
+
 
     /** Method for simple direct minting NFT token
      * @param simpleMintMetadata

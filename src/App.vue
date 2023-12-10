@@ -42,19 +42,29 @@ onMounted(async () => {
 
 })
 
+
+const getMinters = async () => {
+  const minters = await sdk.value.getMinters();
+  console.log(minters)
+}
+
+const tst = async () => {
+  await sdk.value.testPinPdf()
+}
+
 const initSdk = async () => {
 
   const configuration = {
 
     contract: {
-      // adminId: 'v-art-manual.testnet',                   // Admin ID like 'contract.near'
-      adminId: 'v-art-demo-2.testnet',                   // Admin ID like 'contract.near'
-      // nftContractId: 'nft.v-art-manual.testnet',             // NFT Contract ID like 'nft.contract.near'
-      nftContractId: 'nft.v-art-demo-2.testnet',             // NFT Contract ID like 'nft.contract.near'
-      // marketContractId: 'market.v-art-manual.testnet',          // Market Contract ID like 'market.contract.near'
-      marketContractId: 'market.v-art-demo-2.testnet',          // Market Contract ID like 'market.contract.near'
-      // licenseContractId: 'license.v-art-manual.testnet',         // License Contract ID like 'license.contract.near'
-      licenseContractId: 'license.v-art-demo-2.testnet',         // License Contract ID like 'license.contract.near'
+      adminId: 'v-art-manual.testnet',                   // Admin ID like 'contract.near'
+      // adminId: 'v-art-demo-2.testnet',                   // Admin ID like 'contract.near'
+      nftContractId: 'nft.v-art-manual.testnet',             // NFT Contract ID like 'nft.contract.near'
+      // nftContractId: 'nft.v-art-demo-2.testnet',             // NFT Contract ID like 'nft.contract.near'
+      marketContractId: 'market.v-art-manual.testnet',          // Market Contract ID like 'market.contract.near'
+      // marketContractId: 'market.v-art-demo-2.testnet',          // Market Contract ID like 'market.contract.near'
+      licenseContractId: 'license.v-art-manual.testnet',         // License Contract ID like 'license.contract.near'
+      // licenseContractId: 'license.v-art-demo-2.testnet',         // License Contract ID like 'license.contract.near'
       net: 'testnet',                       // NEAR net like 'mainnet'
       keyStore: keyStores.BrowserLocalStorageKeyStore,                  // KeyStore object like keyStores.BrowserLocalStorageKeyStore
       nodeUrl: 'https://rpc.testnet.near.org',                    // Near Node URL. See https://docs.near.org/tools/near-api-js/quick-reference
@@ -129,6 +139,8 @@ const fullMint = () => {
   <button @click="signIn">Sign in</button>
   <button @click="whoami">Who am I</button>
   <button @click="fullMint">Full mint</button>
+  <button @click="tst">TST</button>
+  <button @click="getMinters">Get minters</button>
 
 
   <div>
